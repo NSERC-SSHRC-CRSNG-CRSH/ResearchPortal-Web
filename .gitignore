@@ -1,0 +1,8 @@
+/packages
+*.exe
+*.user
+/PortalPublish
+/xRMCommunityPortalWebDeployPackage
+/**/.vs
+/**/bin/
+/**/obj/
