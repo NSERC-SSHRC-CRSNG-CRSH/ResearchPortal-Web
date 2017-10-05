@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalCustomizations", "PortalCustomizations\PortalCustomizations.csproj", "{B991B1A5-C870-44CA-B18A-8C93E6508DF6}"
-EndProject
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "PortalsBuildScripts", "PortalsBuildScripts\PortalsBuildScripts.pssproj", "{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterPortal", "xRM-Portals-Community-Edition\Samples\MasterPortal\MasterPortal.csproj", "{530E8ABE-6436-44BB-9A8D-EED6542C83B9}"
@@ -31,6 +29,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Xrm.Portal.Files", "xRM-Portals-Community-Edition\Framework\Microsoft.Xrm.Portal.Files\Microsoft.Xrm.Portal.Files.csproj", "{444776B5-4638-4800-9466-0E6F19EA9B93}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xRM-Portals-Community-Edition", "xRM-Portals-Community-Edition", "{16D4922A-8C5C-45BC-A120-FBB53BF86C3C}"
+	ProjectSection(SolutionItems) = preProject
+		xRM-Portals-Community-Edition\README.md = xRM-Portals-Community-Edition\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Items", "Project Items", "{2C6FC648-AD64-4A98-9576-6AE1924A0A95}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPCustomizatoins", "RPCustomizatoins\RPCustomizatoins.csproj", "{B991B1A5-C870-44CA-B18A-8C93E6508DF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +50,6 @@ Global
 		SelfHosted|x86 = SelfHosted|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|x86.Build.0 = Debug|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|x86.ActiveCfg = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|x86.Build.0 = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|Any CPU.ActiveCfg = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|Any CPU.Build.0 = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|x86.ActiveCfg = Release|Any CPU
-		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|x86.Build.0 = Release|Any CPU
 		{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -162,6 +158,18 @@ Global
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.SelfHosted|Any CPU.Build.0 = Release|Any CPU
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.SelfHosted|x86.ActiveCfg = Release|Any CPU
 		{444776B5-4638-4800-9466-0E6F19EA9B93}.SelfHosted|x86.Build.0 = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Debug|x86.Build.0 = Debug|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|x86.ActiveCfg = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.Release|x86.Build.0 = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|Any CPU.ActiveCfg = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|Any CPU.Build.0 = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|x86.ActiveCfg = Release|Any CPU
+		{B991B1A5-C870-44CA-B18A-8C93E6508DF6}.SelfHosted|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

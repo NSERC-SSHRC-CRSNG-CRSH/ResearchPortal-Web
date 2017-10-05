@@ -1,37 +1,62 @@
-# You've added your first ReadMe file!
-A README.md file is intended to quickly orient readers to what your project can do.  New to Markdown? [Learn more](http://go.microsoft.com/fwlink/p/?LinkId=524306&clcid=0x409)
+# RP 2.0 Portal
 
-## Edit this ReadMe and commit your change to a topic branch
-In Git, branches are cheap.  You should use them whenever you're making changes to your repository.  Edit this file by clicking on the edit icon.
+RP 2.0 Portals is built on the xRM Portals Community Edition project.  The goal is to
 
-Then make some changes to this ReadMe file.
+## Objectives
 
-> Make some **edits** to _this_ blockquote
+It is the objective to limit the customizations, and make use of the configuratoins.  To accomplish this, we strive to not modify the underlaying MasterPortal project, but build a layer to runs ontop of it.
 
-When you are done, click the dropdown arrow next to the save button - that will allow you to commit your changes to a new branch.
+If there are features and customizations that the core xRM Portals would benifit from, it would be in the interest in contributing the changes to the core framework back to the project.
 
-## Create a pull request to contribute your changes back into master
-Pull requests are the way to move changes from a topic branch back into the master branch.
+## Building
 
-Click on the **Pull Requests** page in the **CODE** hub, then click "New Pull Request" to create a new pull request from your topic branch to the master branch.
+To build the project, ensure that you have [Git](https://git-scm.com/downloads) installed to obtain the source code, and [Visual Studio 2017](https://docs.microsoft.com/en-us/visualstudio/welcome-to-visual-studio) installed to compile the source code.
 
-When you are done adding details, click "Create Pull request". Once a pull request is sent, reviewers can see your changes, recommend modifications, or even push follow-up commits.
+Clone the RP 2.0 project, and initialze you it.
 
-First time creating a pull request?  [Learn more](http://go.microsoft.com/fwlink/?LinkId=533211&clcid=0x409)
+Since we cannot modify the underlying xRM Portals project, it must be
+```ps
+.\PortalsBuildScripts\build.ps1 -command InitializeIIS
+```
 
-### Congratulations! You've completed the grand tour of the CODE hub!
+## Deployment
 
-# Next steps
+xRM Portals Community Edition is a set of .NET class libraries and an ASP.NET web application called `MasterPortal`. After building the project, `MasterPortal` is run using conventional ASP.NET website hosting methods such as using [IIS](https://www.iis.net/) in on-premise environments, and [Azure Web Apps](https://docs.microsoft.com/en-ca/azure/app-service-web/app-service-web-overview) in cloud environments.
 
-If you haven't already done so, [install Git](http://git-scm.com/downloads) (as well as [Git Credential Manager](https://java.visualstudio.com/Downloads/gitcredentialmanager/Index) for Linux or Mac OS)
+The `MasterPortal` web application  deployment is dependent upon schema (solutions) and data being installed in a Dynamics 365 instance. These components are downloaded from the [Microsoft Download Center](https://www.microsoft.com/en-us/download/details.aspx?id=55789) in the file `MicrosoftDynamics365PortalsSolutions.exe`. The components in this download have not been released under the MIT license and are not managed by the xRM Portals Community Edition project.
 
-Choose and install one of these supported IDEs:
-* [Visual Studio](http://go.microsoft.com/fwlink/?LinkId=309297&clcid=0x409&slcid=0x409)
-* [Android Studio](https://developer.android.com/studio) (with [Team Services Plugin](https://java.visualstudio.com/Downloads/intellijplugin/Index))
-* [Eclipse](http://www.eclipse.org/downloads) (with [Team Explorer Everywhere](https://java.visualstudio.com/Downloads/eclipseplugin/Index))
-* [IntelliJ IDEA](https://www.jetbrains.com/idea/download) (with [Team Services Plugin](https://java.visualstudio.com/Downloads/intellijplugin/Index))
-* [Visual Studio Code](https://code.visualstudio.com/Download) (with [Team Services Extension](https://java.visualstudio.com/Downloads/visualstudiocode/Index))
+A full description of the deployment process is described in the file `Self-hosted_Installation_Guide_for_Portals.pdf` available for download on the [Microsoft Download Center](https://www.microsoft.com/en-us/download/details.aspx?id=55789).
 
-Then clone this repo to your local machine to get started with your own project.
+## System Requirements
 
-Happy coding!
+The following system requirements are additional to those listed in `Self-hosted_Installation_Guide_for_Portals.pdf`:
+
+- The website must be set to run in 64-bit mode:
+
+  IIS Application Pool:
+   
+  ![image](https://user-images.githubusercontent.com/10599498/30821566-03ec5466-a1e3-11e7-80bd-bb0b1c724452.png)
+
+  Azure Web App:
+   
+  ![image](https://user-images.githubusercontent.com/10599498/30821633-468576ae-a1e3-11e7-8b45-e55df1742629.png)
+
+- IIS 7.5 (Windows 7 or Windows Server 2008 R2) requires the installation of the [IIS Application Initialization module](https://www.iis.net/downloads/microsoft/application-initialization). Use the `x64` download link at the [bottom of the page](https://www.iis.net/downloads/microsoft/application-initialization#additionalDownloads).
+
+## Support
+
+There are two primary methods of obtaining support for this project:
+
+1. Community-driven support is available by [submitting issues](https://github.com/Adoxio/xRM-Portals-Community-Edition/issues) to this GitHub project
+2. Commercial support options are available from [Adoxio](https://www.adoxio.com/xRM-Portals-Community-Edition/)
+
+## License
+
+This project uses the [MIT license](https://opensource.org/licenses/MIT).
+
+## Contributions
+
+This project accepts community contributions through GitHub, following the [inbound=outbound](https://opensource.guide/legal/#does-my-project-need-an-additional-contributor-agreement) model as described in the [GitHub Terms of Service](https://help.github.com/articles/github-terms-of-service/#6-contributions-under-repository-license):
+> Whenever you make a contribution to a repository containing notice of a license, you license your contribution under the same terms, and you agree that you have the right to license your contribution under those terms.
+
+Please submit one pull request per issue so that we can easily identify and review the changes.
