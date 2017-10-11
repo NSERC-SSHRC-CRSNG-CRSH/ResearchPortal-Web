@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project Items", "Project It
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterPortal", "ResearchPortal\MasterPortal\MasterPortal.csproj", "{530E8ABE-6436-44BB-9A8D-EED6542C83B9}"
 EndProject
-Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "PortalsBuildScripts", "Build\PortalsBuildScripts.pssproj", "{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}"
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "PortalsBuildScripts", "BuildScripts\PortalsBuildScripts.pssproj", "{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

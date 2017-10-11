@@ -290,5 +290,10 @@ function xRMPortals(){
     Write-Host "Initializing xRMPortalsCommunityEdition"
     $proj =  $buildSettings.Projects.xRMPortalsCommunityEdition    
     Build -project $proj -profileName "Dev"
+    
+    $proj =  $buildSettings.Projects.ResearchPortal  
+    $pathToSolution = Join-Path $rootSourcePath  $proj.PathToSolution
+
+    RestoreNuGetPackages $pathToSolution
 }
 
