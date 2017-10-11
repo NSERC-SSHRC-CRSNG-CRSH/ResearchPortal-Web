@@ -14,10 +14,8 @@ To build the project, ensure that you have [Git](https://git-scm.com/downloads) 
 
 Clone the RP 2.0 project, and initialze you it.
 
-Since we cannot modify the underlying xRM Portals project, it must be
-```ps
-.\BuildScripts\Restore-xRM-Portals-NuGet.ps1
-```
+- Open the `RP2.0-Portal.sln` solution file in Visual Studio
+- Build the solution in Visual Studio
 
 ## Deployment
 
