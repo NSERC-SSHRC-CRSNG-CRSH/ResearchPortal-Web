@@ -16,7 +16,7 @@ Clone the RP 2.0 project, and initialze you it.
 
 Since we cannot modify the underlying xRM Portals project, it must be
 ```ps
-.\PortalsBuildScripts\build.ps1 -command InitializeIIS
+.\BuildScripts\Build-xRM-Portals-Community-Edition.ps1
 ```
 
 ## Deployment
