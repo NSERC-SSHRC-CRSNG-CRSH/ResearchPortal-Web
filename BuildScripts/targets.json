@@ -1,0 +1,106 @@
+{
+    "ResearchPortal": {
+        "Description": "Research Portals Project",
+        "PathToSolution": "RP2.0-Portal.sln",
+        "BuildProfiles": {
+            "Dev": {
+                "Description": "Build profile locally to use for development",
+                "Properties": {
+                    "Configuration": "Debug"
+                },
+                "PublishProfile": {
+                    "publishUrl": "PortalPublish",
+                    "WebPublishMethod": "FileSystem",
+                    "DeployDefaultTarget": "WebPublish",
+                    "EnableUpdateable": "True"
+                }
+            },
+            "WebDeployPackage": {
+                "Description": "Create the base MasterPortal Web Deploy Package to be deployed to the target environment.",
+                "Properties": {
+                    "Configuration": "Release"
+                },
+                "PublishProfile": {
+                    "DesktopBuildPackageLocation": "RP2PortalsWebDeploy\\RP2Portals.WebDeploy.zip",
+                    "WebPublishMethod": "Package",
+                    "PackageAsSingleFile": "true",
+                    "DeployIisAppPath": "RP2Portal",
+                    "ExcludeApp_Data": "True",
+                    "DeployDefaultTarget": "WebPublish",
+                    "PrecompileBeforePublish": "true",
+                    "EnableUpdateable": "true"
+                }
+            }
+        }
+    },
+    "xRMPortalsCommunityEdition": {
+        "Description": "",
+        "PathToSolution": "xRM-Portals-Community-Edition\\Solutions\\Portals\\Portals.sln",
+        "BuildProfiles": {
+            "Dev": {
+                "Description": "Publish the profile locally to use for development",
+                "Properties": {
+                    "Configuration": "Debug"
+                },
+                "PublishProfile": {
+                    "publishUrl": "PortalPublish",
+                    "WebPublishMethod": "FileSystem",
+                    "DeployDefaultTarget": "WebPublish",
+                    "EnableUpdateable": "True"
+                }
+            },
+            "WebDeployPackage": {
+                "Description": "Create the base MasterPortal Web Deploy Package to be deployed to the target environment.",
+                "Properties": {
+                    "Configuration": "Release"
+                },
+                "PublishProfile": {
+                    "DesktopBuildPackageLocation": "RP2PortalsWebDeploy\\xRMCommunityPortal.WebDeploy.zip",
+                    "WebPublishMethod": "Package",
+                    "PackageAsSingleFile": "true",
+                    "DeployIisAppPath": "RP2Portal",
+                    "ExcludeApp_Data": "True",
+                    "DeployDefaultTarget": "WebPublish",
+                    "PrecompileBeforePublish": "True",
+                    "EnableUpdateable": "True"
+                }
+            }
+        }
+    },
+    "RPCustomizations": {
+        "Description": "RP Customizations Project",
+        "PathToSolution": "RP2.0-Portal.sln",
+        "TargetProject": "RPCustomizations",
+        "BuildProfiles": {
+            "Dev": {
+                "Description": "Build profile locally to use for development",
+                "Properties": {
+                    "Configuration": "Debug"
+                },
+                "PublishProfile": {
+                    "publishUrl": "PortalPublish",
+                    "WebPublishMethod": "FileSystem",
+                    "DeployDefaultTarget": "WebPublish",
+                    "EnableUpdateable": "True"
+                }
+            },
+            "WebDeployPackage": {
+                "Description": "Create the base MasterPortal Web Deploy Package to be deployed to the target environment.",
+                "Properties": {
+                    "Configuration": "Release"
+                },
+                "PublishProfile": {
+                    "DesktopBuildPackageLocation": "RP2PortalsWebDeploy\\RP2Portals.WebDeploy.zip",
+                    "WebPublishMethod": "Package",
+                    "PackageAsSingleFile": "true",
+                    "DeployIisAppPath": "RP2Portal",
+                    "ExcludeApp_Data": "True",
+                    "DeployDefaultTarget": "WebPublish",
+                    "PrecompileBeforePublish": "true",
+                    "EnableUpdateable": "true"
+                }
+            }
+        }
+    }
+
+}
