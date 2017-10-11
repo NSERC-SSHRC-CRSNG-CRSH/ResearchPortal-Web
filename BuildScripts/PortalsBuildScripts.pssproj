@@ -26,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Build-xRM-Portals-Community-Edition.ps1" />
+    <Compile Include="Restore-xRM-Portals-NuGet.ps1" />
     <Compile Include="Build.ps1" />
     <Compile Include="build.psm1" />
   </ItemGroup>

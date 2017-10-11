@@ -297,3 +297,16 @@ function xRMPortals(){
     RestoreNuGetPackages $pathToSolution
 }
 
+
+function xRMPortalsNuGetRestore(){
+    Write-Host "Initializing xRMPortalsCommunityEdition"
+    $proj =  $buildSettings.Projects.xRMPortalsCommunityEdition    
+    $pathToSolution = Join-Path $rootSourcePath  $proj.PathToSolution
+
+    RestoreNuGetPackages $pathToSolution
+    
+    $proj =  $buildSettings.Projects.ResearchPortal  
+    $pathToSolution = Join-Path $rootSourcePath  $proj.PathToSolution
+
+    RestoreNuGetPackages $pathToSolution
+}
