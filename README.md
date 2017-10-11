@@ -14,7 +14,7 @@ To build the project, ensure that you have [Git](https://git-scm.com/downloads) 
 
 Clone the RP 2.0 project, and initialze you it.
 
-- Open the `RP2.0-Portal.sln` solution file in Visual Studio
+- Open the `ResearchPortal-Web.sln` solution file in Visual Studio
 - Build the solution in Visual Studio
 
 ## Deployment
