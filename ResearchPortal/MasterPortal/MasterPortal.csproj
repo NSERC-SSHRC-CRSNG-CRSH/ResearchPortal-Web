@@ -3411,6 +3411,9 @@
     <Folder Include="Areas\KnowledgeBase\Views\Shared\" />
     <Folder Include="Areas\Marketing\Models\" />
     <Folder Include="Areas\Portal\Views\EntityActivity\" />
+    <Folder Include="Areas\ResearchPortal\Controllers\" />
+    <Folder Include="Areas\ResearchPortal\Models\" />
+    <Folder Include="Areas\ResearchPortal\Views\" />
     <Folder Include="Areas\Social\Models\" />
     <Folder Include="Areas\Social\Views\Shared\" />
     <Folder Include="images\prettyPhoto\" />
@@ -3548,16 +3551,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52281</DevelopmentServerPort>
-          <DevelopmentServerVPath>/adxstudio-portals</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52281/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
