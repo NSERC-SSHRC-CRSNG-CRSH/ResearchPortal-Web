@@ -1,10 +1,7 @@
 /packages
 *.exe
 *.user
-/PortalPublish
-/xRMCommunityPortalWebDeployPackage
 /**/.vs
 /**/bin/
 /**/obj/
-/.msbuild
 /ResearchPortal/MasterPortal/App_Data
