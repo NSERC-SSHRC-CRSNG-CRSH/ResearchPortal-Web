@@ -1,6 +1,6 @@
 # Research Portal Web
 
-This is the project for next Research Portal Web interface.  It is built using the xRM Portals Community Edition project. 
+This is a Proof of Concept to investigate developing a Portal for Dynamics 365 built using the xRM Portals Community Edition project. 
 
 ## Objectives
 
