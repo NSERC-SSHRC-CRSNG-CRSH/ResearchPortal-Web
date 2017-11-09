@@ -65,7 +65,7 @@ namespace ResearchPortal.Web.Areas.Orcid
             request.AddParameter("redirect_uri", orcidClientRequestUri);
 
             IRestResponse<OrcidAccessTokenDetails> response = client.Execute<OrcidAccessTokenDetails>(request);
-            
+
             if (!response.IsSuccessful)
             {
                 throw new Exception($"{response.StatusCode}, {response.Content}");
@@ -80,6 +80,16 @@ namespace ResearchPortal.Web.Areas.Orcid
             contact["rp2_orcidutcexpiry"] = utcExpiry;
             contact["rp2_orcidaccesstoken"] = accessToken.AccessToken;
             contact["rp2_orcid"] = accessToken.OrcidId;
+
+            //string[] names = accessToken.Name.Split(' ');
+            //if (names.Length >= 1)
+            //{
+            //    contact["firstname"] = names.FirstOrDefault();
+            //}
+            //if (names.Length >= 2)
+            //{
+            //    contact["lastname"] = names.LastOrDefault();
+            //}
             service.Update(contact);
 
 
