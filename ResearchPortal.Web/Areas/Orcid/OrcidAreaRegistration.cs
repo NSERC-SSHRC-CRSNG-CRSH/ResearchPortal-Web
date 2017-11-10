@@ -2,17 +2,17 @@
 
 namespace ResearchPortal.Web.Areas.Orcid
 {
-    public class OrcidAreaRegistration : AreaRegistration 
+    public class OrcidAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Orcid";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "Orcid_default",
@@ -22,9 +22,9 @@ namespace ResearchPortal.Web.Areas.Orcid
 
             context.MapRoute(
               "ResearchPortal_Orcid",
-              "ResearchPortal/Orcid",
+              "ResearchPortal/Orcid/{action}",
               new { pageless = true, area = "ResearchPortal", controller = "Orcid", action = "Index" });
-
+            
         }
     }
 }
