@@ -36,13 +36,9 @@ namespace ResearchPortal.Web.Areas.Orcid
 
 
         protected CrmUser xrmUser { get; set; }
-        public OrcidController()
-        {
-            // Get the CRM user from the xrm Portal HttpContext
-            xrmUser = HttpContext.GetUser();
 
-            UserOrcid = xrmUser.Entity["rp2_orcid"].ToString();
-            UserAuthorizationToken = xrmUser.Entity["rp2_orcidaccesstoken"].ToString();
+        public void InitializeOrcidController()
+        {
 
             OrcidBaseUrl = HttpContext.GetWebsite().Settings.Get<string>(orcidBaseUrlKey);
             if (OrcidBaseUrl.EndsWith("/"))
@@ -54,6 +50,12 @@ namespace ResearchPortal.Web.Areas.Orcid
             OrcidClientSecret = HttpContext.GetWebsite().Settings.Get<string>(orcidClientSecretKey);
             OrcidClientRequestUri = Request.Url.GetLeftPart(UriPartial.Authority) + "/ResearchPortal/Orcid";
 
+
+            // Get the CRM user from the xrm Portal HttpContext
+            xrmUser = HttpContext.GetUser();
+
+            UserOrcid = xrmUser.Entity["rp2_orcid"].ToString();
+            UserAuthorizationToken = xrmUser.Entity["rp2_orcidaccesstoken"].ToString();
         }
 
         /// <summary>
@@ -63,6 +65,7 @@ namespace ResearchPortal.Web.Areas.Orcid
         [HttpGet]
         public ActionResult Index()
         {
+            InitializeOrcidController();
             // if the user is anonymus or null, redirect them to the signin page
             if (xrmUser == null || xrmUser == CrmUser.Anonymous)
             {
@@ -138,6 +141,7 @@ namespace ResearchPortal.Web.Areas.Orcid
         [HttpGet()]
         public ActionResult RetrieveOrcidDetails()
         {
+            InitializeOrcidController();
             //http://localhost:8020/ResearchPortal/Orcid/RetrieveOrcidDetails
             // if the user is anonymus or null, redirect them to the signin page
             if (xrmUser == null || xrmUser == CrmUser.Anonymous)
