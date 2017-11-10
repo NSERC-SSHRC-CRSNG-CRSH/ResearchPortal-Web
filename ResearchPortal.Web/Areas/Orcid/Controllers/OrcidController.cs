@@ -25,6 +25,7 @@ namespace ResearchPortal.Web.Areas.Orcid
         private const string orcidClientRequestUriKey = "ResearchPortal/ORCID/API/RequestUri";
 
         protected string OrcidBaseUrl { get; set; }
+        protected string OrcidApiBaseUrl { get; set; }
 
 
         protected string OrcidClientId { get; set; }
@@ -33,7 +34,7 @@ namespace ResearchPortal.Web.Areas.Orcid
 
         protected string UserOrcid { get; set; }
         protected string UserAuthorizationToken { get; set; }
-
+        protected IOrganizationService service { get; set; }
 
         protected CrmUser xrmUser { get; set; }
 
@@ -50,12 +51,22 @@ namespace ResearchPortal.Web.Areas.Orcid
             OrcidClientSecret = HttpContext.GetWebsite().Settings.Get<string>(orcidClientSecretKey);
             OrcidClientRequestUri = Request.Url.GetLeftPart(UriPartial.Authority) + "/ResearchPortal/Orcid";
 
-
+            OrcidApiBaseUrl = "https://api.sandbox.orcid.org/v2.0";
             // Get the CRM user from the xrm Portal HttpContext
             xrmUser = HttpContext.GetUser();
 
-            UserOrcid = xrmUser.Entity["rp2_orcid"].ToString();
-            UserAuthorizationToken = xrmUser.Entity["rp2_orcidaccesstoken"].ToString();
+            service = HttpContext.GetOrganizationService();
+
+            Entity userContact = service.Retrieve(xrmUser.ContactId.LogicalName, xrmUser.ContactId.Id, new Microsoft.Xrm.Sdk.Query.ColumnSet("rp2_orcid", "rp2_orcidaccesstoken"));
+            if (userContact.Contains("rp2_orcid"))
+            {
+                UserOrcid = userContact["rp2_orcid"].ToString();
+            }
+
+            if (userContact.Contains("rp2_orcidaccesstoken"))
+            {
+                UserAuthorizationToken = userContact["rp2_orcidaccesstoken"].ToString();
+            }
         }
 
         /// <summary>
@@ -130,7 +141,7 @@ namespace ResearchPortal.Web.Areas.Orcid
                 contact["lastname"] = names.LastOrDefault();
             }
 
-            IOrganizationService service = HttpContext.GetOrganizationService();
+
             service.Update(contact);
 
 
@@ -142,7 +153,6 @@ namespace ResearchPortal.Web.Areas.Orcid
         public ActionResult RetrieveOrcidDetails()
         {
             InitializeOrcidController();
-            //http://localhost:8020/ResearchPortal/Orcid/RetrieveOrcidDetails
             // if the user is anonymus or null, redirect them to the signin page
             if (xrmUser == null || xrmUser == CrmUser.Anonymous)
             {
@@ -150,8 +160,10 @@ namespace ResearchPortal.Web.Areas.Orcid
                 return Redirect("/SignIn/");
             }
 
+            //https://api.sandbox.orcid.org/v2.0/0000-0002-0455-4284/record
+
             // Create a Rest Client API object
-            var client = new RestClient($"{OrcidBaseUrl}/oauth/token");
+            var client = new RestClient($"{OrcidApiBaseUrl}/{UserOrcid}/record");
             var request = new RestRequest(Method.GET); // set the method to Post
 
             // Add the necessary headers
@@ -165,9 +177,14 @@ namespace ResearchPortal.Web.Areas.Orcid
             Entity contact = new Entity(xrmUser.ContactId.LogicalName);
             contact.Id = xrmUser.ContactId.Id;
 
-            contact["description"] = response.Content;
+            string content = response.Content;
+            if (content.Length > 2000)
+            {
+                content = content.Substring(0, 2000);
+            }
 
-            IOrganizationService service = HttpContext.GetOrganizationService();
+            contact["description"] = content;
+            service = HttpContext.GetOrganizationService();
             service.Update(contact);
 
             return Redirect("/profile");
