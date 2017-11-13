@@ -28,7 +28,7 @@
     <TargetFrameworkProfile />
     <NativeDllPath>..\..\xRM-Portals-Community-Edition\packages\\Microsoft.Cloud.InstrumentationFramework.3.0.4.146\build\native\lib</NativeDllPath>
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.2</TypeScriptToolsVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\Solutions\MasterPortalSolution\</SolutionDir>
     <Use64BitIISExpress />
   </PropertyGroup>
@@ -3473,6 +3473,10 @@
     <Content Include="Content\RadCaptcha\Z.wav" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Orcid.API.Client\Orcid.API.Client.csproj">
+      <Project>{3bbc226f-4635-4e6a-a155-1337af6e7922}</Project>
+      <Name>Orcid.API.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ResearchPortal.Web\ResearchPortal.Web.csproj">
       <Project>{485a10ed-aa59-4bcf-8c21-7aaca9aa715b}</Project>
       <Name>ResearchPortal.Web</Name>

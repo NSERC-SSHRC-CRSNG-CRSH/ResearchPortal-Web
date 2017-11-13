@@ -62,7 +62,6 @@
     <Compile Include="Areas\Orcid\OrcidAreaRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Areas\Orcid\Controllers\OrcidController.cs" />
-    <Compile Include="Areas\Orcid\Models\OrcidAccessTokenDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Orcid\Views\web.config" />
@@ -88,9 +87,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Orcid\Models\" />
     <Folder Include="Areas\Orcid\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Orcid.API.Client\Orcid.API.Client.csproj">
+      <Project>{3bbc226f-4635-4e6a-a155-1337af6e7922}</Project>
+      <Name>Orcid.API.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\xRM-Portals-Community-Edition\Framework\Adxstudio.Xrm\Adxstudio.Xrm.csproj">
       <Project>{a8ab533b-e117-4f62-ae45-c3dc5e1e5d0a}</Project>
       <Name>Adxstudio.Xrm</Name>

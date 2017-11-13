@@ -10,6 +10,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using RestSharp;
 using Adxstudio.Xrm.Web;
+using Orcid.API.Client;
+using Orcid.Models;
 
 namespace ResearchPortal.Web.Areas.Orcid
 {
@@ -38,6 +40,8 @@ namespace ResearchPortal.Web.Areas.Orcid
 
         protected CrmUser xrmUser { get; set; }
 
+        protected OrcidClient OrcidClient { get; set; }
+
         public void InitializeOrcidController()
         {
 
@@ -52,6 +56,7 @@ namespace ResearchPortal.Web.Areas.Orcid
             OrcidClientRequestUri = Request.Url.GetLeftPart(UriPartial.Authority) + "/ResearchPortal/Orcid";
 
             OrcidApiBaseUrl = "https://api.sandbox.orcid.org/v2.0";
+
             // Get the CRM user from the xrm Portal HttpContext
             xrmUser = HttpContext.GetUser();
 
@@ -67,6 +72,10 @@ namespace ResearchPortal.Web.Areas.Orcid
             {
                 UserAuthorizationToken = userContact["rp2_orcidaccesstoken"].ToString();
             }
+
+
+            OrcidClient = new OrcidClient(OrcidApiBaseUrl, UserAuthorizationToken, UserOrcid);
+
         }
 
         /// <summary>
@@ -92,34 +101,7 @@ namespace ResearchPortal.Web.Areas.Orcid
             }
             string orcidReturnCode = Request.QueryString["code"];
 
-
-            // Create a Rest Client API object
-            var client = new RestClient($"{OrcidBaseUrl}/oauth/token");
-            var request = new RestRequest(Method.POST); // set the method to Post
-
-            // Add the necessary headers
-            request.AddHeader("Accept", "application/json");
-            request.AddHeader("Content-type", "application/x-www-form-urlencoded");
-
-            // add the parameters
-            request.AddParameter("code", orcidReturnCode);
-            request.AddParameter("client_secret", OrcidClientSecret);
-            request.AddParameter("grant_type", "authorization_code");
-            request.AddParameter("client_id", OrcidClientId);
-            request.AddParameter("redirect_uri", OrcidClientRequestUri);
-
-            // request the auth token from ORCID, and receive the response back.
-            IRestResponse<OrcidAccessTokenDetails> response = client.Execute<OrcidAccessTokenDetails>(request);
-
-            if (!response.IsSuccessful)
-            {
-                // if the response is invalid, throw an exception
-                // TODO imporove
-                throw new Exception($"{response.StatusCode}, {response.Content}");
-            }
-
-            // extract the token
-            OrcidAccessTokenDetails accessToken = response.Data;
+            OrcidAccessTokenDetails accessToken = OrcidClient.GetAccessToken(OrcidBaseUrl, orcidReturnCode, OrcidClientSecret, OrcidClientId, OrcidClientRequestUri);
 
             // Create the entity contact to update.
             Entity contact = new Entity(xrmUser.ContactId.LogicalName);
@@ -131,6 +113,9 @@ namespace ResearchPortal.Web.Areas.Orcid
             contact["rp2_orcidaccesstoken"] = accessToken.AccessToken;
             contact["rp2_orcid"] = accessToken.OrcidId;
 
+            record record = OrcidClient.GetUserRecord();
+
+            
             string[] names = accessToken.Name.Split(' ');
             if (string.IsNullOrEmpty(xrmUser.FirstName) && names.Length >= 1)
             {
@@ -141,9 +126,7 @@ namespace ResearchPortal.Web.Areas.Orcid
                 contact["lastname"] = names.LastOrDefault();
             }
 
-
             service.Update(contact);
-
 
             return Redirect("/profile/");
         }
@@ -160,30 +143,9 @@ namespace ResearchPortal.Web.Areas.Orcid
                 return Redirect("/SignIn/");
             }
 
-            //https://api.sandbox.orcid.org/v2.0/0000-0002-0455-4284/record
-
-            // Create a Rest Client API object
-            var client = new RestClient($"{OrcidApiBaseUrl}/{UserOrcid}/record");
-            var request = new RestRequest(Method.GET); // set the method to Post
-
-            // Add the necessary headers
-            request.AddHeader("Accept", "application/vnd.orcid+xml");
-            request.AddHeader("Authorization", $"Bearer {UserAuthorizationToken}");
-
-            // request the auth token from ORCID, and receive the response back.
-            IRestResponse response = client.Execute(request);
-
             // Create the entity contact to update.
             Entity contact = new Entity(xrmUser.ContactId.LogicalName);
             contact.Id = xrmUser.ContactId.Id;
-
-            string content = response.Content;
-            if (content.Length > 2000)
-            {
-                content = content.Substring(0, 2000);
-            }
-
-            contact["description"] = content;
             service = HttpContext.GetOrganizationService();
             service.Update(contact);
 

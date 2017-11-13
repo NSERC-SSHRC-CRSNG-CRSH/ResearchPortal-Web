@@ -1,9 +1,7 @@
-﻿
-
-using RestSharp.Deserializers;
+﻿using RestSharp.Deserializers;
 using System.Runtime.Serialization;
 
-namespace ResearchPortal.Web.Areas.Orcid
+namespace Orcid.Models
 {
     [DataContract ]
     public class OrcidAccessTokenDetails
