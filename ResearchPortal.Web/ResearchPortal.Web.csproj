@@ -60,13 +60,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Areas\Orcid\OrcidAreaRegistration.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Areas\Orcid\Controllers\OrcidController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Orcid\Views\web.config" />
     <None Include="packages.config" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -94,6 +103,10 @@
     <ProjectReference Include="..\Orcid.API.Client\Orcid.API.Client.csproj">
       <Project>{3bbc226f-4635-4e6a-a155-1337af6e7922}</Project>
       <Name>Orcid.API.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ResearchPortal.Lib\ResearchPortal.Lib.csproj">
+      <Project>{baffe5d9-653c-4818-b68f-e5732a764dba}</Project>
+      <Name>ResearchPortal.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\xRM-Portals-Community-Edition\Framework\Adxstudio.Xrm\Adxstudio.Xrm.csproj">
       <Project>{a8ab533b-e117-4f62-ae45-c3dc5e1e5d0a}</Project>
@@ -174,16 +187,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57947/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

@@ -15,7 +15,7 @@
     <RootNamespace>Site</RootNamespace>
     <AssemblyName>Site</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -3476,6 +3476,10 @@
     <ProjectReference Include="..\..\Orcid.API.Client\Orcid.API.Client.csproj">
       <Project>{3bbc226f-4635-4e6a-a155-1337af6e7922}</Project>
       <Name>Orcid.API.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ResearchPortal.Lib\ResearchPortal.Lib.csproj">
+      <Project>{baffe5d9-653c-4818-b68f-e5732a764dba}</Project>
+      <Name>ResearchPortal.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ResearchPortal.Web\ResearchPortal.Web.csproj">
       <Project>{485a10ed-aa59-4bcf-8c21-7aaca9aa715b}</Project>

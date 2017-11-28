@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Adxstudio.Xrm.Web;
 using Microsoft.Xrm.Sdk;
 using Adxstudio.Xrm.AspNet.Identity;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using RestSharp;
-using Adxstudio.Xrm.Web;
 using Orcid.API.Client;
 using Orcid.Models;
+using ResearchPortal.Entities;
+using Microsoft.Xrm.Sdk.Messages;
+using System.ServiceModel;
+using Adxstudio.Xrm;
 
 namespace ResearchPortal.Web.Areas.Orcid
 {
@@ -21,12 +19,13 @@ namespace ResearchPortal.Web.Areas.Orcid
     public class OrcidController : Controller
     {
         // ORCID Webiste Settings Keys for the ORCID API.
-        private const string orcidBaseUrlKey = "ResearchPortal/ORCID/API/BaseUrl";
+        private const string orcidOAuthUrlKey = "ResearchPortal/ORCID/API/OAuthUrl";
+        private const string orcidApiKey = "ResearchPortal/ORCID/API/BaseUrl";
         private const string orcidClientIdKey = "ResearchPortal/ORCID/API/ClientId";
         private const string orcidClientSecretKey = "ResearchPortal/ORCID/API/ClientSecret";
         private const string orcidClientRequestUriKey = "ResearchPortal/ORCID/API/RequestUri";
 
-        protected string OrcidBaseUrl { get; set; }
+        protected string OrcidOAuthUrl { get; set; }
         protected string OrcidApiBaseUrl { get; set; }
 
 
@@ -42,23 +41,28 @@ namespace ResearchPortal.Web.Areas.Orcid
 
         protected OrcidClient OrcidClient { get; set; }
 
-        public void InitializeOrcidController()
+        public bool InitializeOrcidController()
         {
-
-            OrcidBaseUrl = HttpContext.GetWebsite().Settings.Get<string>(orcidBaseUrlKey);
-            if (OrcidBaseUrl.EndsWith("/"))
+            // Get the CRM user from the xrm Portal HttpContext
+            xrmUser = HttpContext.GetUser();
+            if (xrmUser == null || xrmUser == CrmUser.Anonymous)
             {
-                OrcidBaseUrl = OrcidBaseUrl.Substring(0, OrcidBaseUrl.Length - 1);
+                return false;
+            }
+
+
+            OrcidOAuthUrl = HttpContext.GetWebsite().Settings.Get<string>(orcidOAuthUrlKey);
+            if (OrcidOAuthUrl.EndsWith("/"))
+            {
+                OrcidOAuthUrl = OrcidOAuthUrl.Substring(0, OrcidOAuthUrl.Length - 1);
             }
 
             OrcidClientId = HttpContext.GetWebsite().Settings.Get<string>(orcidClientIdKey);
             OrcidClientSecret = HttpContext.GetWebsite().Settings.Get<string>(orcidClientSecretKey);
             OrcidClientRequestUri = Request.Url.GetLeftPart(UriPartial.Authority) + "/ResearchPortal/Orcid";
 
-            OrcidApiBaseUrl = "https://api.sandbox.orcid.org/v2.0";
+            OrcidApiBaseUrl = HttpContext.GetWebsite().Settings.Get<string>(orcidApiKey);
 
-            // Get the CRM user from the xrm Portal HttpContext
-            xrmUser = HttpContext.GetUser();
 
             service = HttpContext.GetOrganizationService();
 
@@ -75,7 +79,7 @@ namespace ResearchPortal.Web.Areas.Orcid
 
 
             OrcidClient = new OrcidClient(OrcidApiBaseUrl, UserAuthorizationToken, UserOrcid);
-
+            return true;
         }
 
         /// <summary>
@@ -85,9 +89,8 @@ namespace ResearchPortal.Web.Areas.Orcid
         [HttpGet]
         public ActionResult Index()
         {
-            InitializeOrcidController();
             // if the user is anonymus or null, redirect them to the signin page
-            if (xrmUser == null || xrmUser == CrmUser.Anonymous)
+            if (!InitializeOrcidController())
             {
                 // TODO give a better error around not already being signed in.
                 return Redirect("/SignIn/");
@@ -101,7 +104,7 @@ namespace ResearchPortal.Web.Areas.Orcid
             }
             string orcidReturnCode = Request.QueryString["code"];
 
-            OrcidAccessTokenDetails accessToken = OrcidClient.GetAccessToken(OrcidBaseUrl, orcidReturnCode, OrcidClientSecret, OrcidClientId, OrcidClientRequestUri);
+            OrcidAccessTokenDetails accessToken = OrcidClient.GetAccessToken(OrcidOAuthUrl, orcidReturnCode, OrcidClientSecret, OrcidClientId, OrcidClientRequestUri);
 
             // Create the entity contact to update.
             Entity contact = new Entity(xrmUser.ContactId.LogicalName);
@@ -113,17 +116,20 @@ namespace ResearchPortal.Web.Areas.Orcid
             contact["rp2_orcidaccesstoken"] = accessToken.AccessToken;
             contact["rp2_orcid"] = accessToken.OrcidId;
 
+
+            UserAuthorizationToken = accessToken.AccessToken;
+            UserOrcid = accessToken.OrcidId;
+            OrcidClient = new OrcidClient(OrcidApiBaseUrl, UserAuthorizationToken, UserOrcid);
+
             record record = OrcidClient.GetUserRecord();
 
-            
-            string[] names = accessToken.Name.Split(' ');
-            if (string.IsNullOrEmpty(xrmUser.FirstName) && names.Length >= 1)
+            if (string.IsNullOrEmpty(xrmUser.FirstName) && !string.IsNullOrEmpty(record?.person?.name?.givennames?.Value))
             {
-                contact["firstname"] = names.FirstOrDefault();
+                contact["firstname"] = record.person.name.givennames.Value;
             }
-            if (string.IsNullOrEmpty(xrmUser.LastName) && names.Length >= 2)
+            if (string.IsNullOrEmpty(xrmUser.LastName) && !string.IsNullOrEmpty(record?.person?.name?.familyname?.Value))
             {
-                contact["lastname"] = names.LastOrDefault();
+                contact["lastname"] = record.person.name.familyname.Value;
             }
 
             service.Update(contact);
@@ -131,25 +137,83 @@ namespace ResearchPortal.Web.Areas.Orcid
             return Redirect("/profile/");
         }
 
-        [Route("ResearchPortal/Orcid/RetrieveOrcidDetails")]
+
+        /// <summary>
+        /// Retrieve the user Orcid Profile
+        /// </summary>
+        /// <returns></returns>
+        [Route("ResearchPortal/Orcid/RetrieveOrcidProfile")]
         [HttpGet()]
-        public ActionResult RetrieveOrcidDetails()
+        public ActionResult RetrieveOrcidProfile()
         {
-            InitializeOrcidController();
             // if the user is anonymus or null, redirect them to the signin page
-            if (xrmUser == null || xrmUser == CrmUser.Anonymous)
+
+            if (!InitializeOrcidController())
             {
                 // TODO give a better error around not already being signed in.
                 return Redirect("/SignIn/");
             }
+            if (string.IsNullOrEmpty(UserAuthorizationToken))
+            {
+                // user authorization token is not defined
+            }
+
+            record userRecord = OrcidClient.GetUserRecord();
 
             // Create the entity contact to update.
-            Entity contact = new Entity(xrmUser.ContactId.LogicalName);
+            Contact contact = new Contact();
             contact.Id = xrmUser.ContactId.Id;
+            contact.rp2_OricdBiography = userRecord?.person?.biography?.content;
+
             service = HttpContext.GetOrganizationService();
+
             service.Update(contact);
 
-            return Redirect("/profile");
+            if (userRecord.activitiessummary == null)
+            {
+                return Redirect("/profile/orcid/");
+            }
+            ExecuteMultipleRequest mRequest = new ExecuteMultipleRequest();
+            mRequest.Settings = new ExecuteMultipleSettings();
+            mRequest.Settings.ContinueOnError = true;
+            mRequest.Settings.ReturnResponses = false;
+            mRequest.Requests = new OrganizationRequestCollection();
+
+            employments userEmployments = OrcidClient.GetUserOrcidData<employments>(userRecord.activitiessummary.employments.path);
+            if (userEmployments?.employmentsummary != null)
+            {
+                foreach (employmentsummary es in userEmployments.employmentsummary)
+                {
+                    rp2_employment employment = new rp2_employment("rp2_sourceidentifier", es.path);
+
+                    employment.rp2_Person = xrmUser.ContactId;
+                    employment.rp2_Department = es?.departmentname;
+                    employment.rp2_OrganizationNameText = es?.organization?.name;
+                    employment.rp2_RoleTitle = es.roletitle;
+                    employment.rp2_City = es.organization?.address?.city;
+                    employment.rp2_Country = es.organization?.address?.country.ToString();
+                    employment.rp2_StateProvince = es.organization?.address?.region;
+                    employment.rp2_EndDate = es.enddate?.ToDateTime();
+                    employment.rp2_StartDate = es.startdate?.ToDateTime();
+
+                    //service.Create(employment);
+                    UpsertRequest cRq = new UpsertRequest();
+                    cRq.Target = employment;
+                    mRequest.Requests.Add(cRq);
+                }
+            }
+            if (mRequest.Requests.Count > 0)
+            {
+                ExecuteMultipleResponse response = service.Execute(mRequest) as ExecuteMultipleResponse;
+                // TODO validate resonse
+                var errorFaults = response.Responses.Where(r => r.Fault != null);
+                if (errorFaults.Any())
+                {
+                    string errorMessages = "{" + string.Join("}, {", errorFaults.Select(f => f.Fault.Message)) + "}";
+                    throw new Exception(errorMessages);
+                }
+            }
+            return Redirect("/profile/orcid/");
         }
     }
 }

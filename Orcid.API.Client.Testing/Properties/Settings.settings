@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Orcid.API.Client.Testing.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="OrcidOAuthUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://sandbox.orcid.org/oauth/token</Value>
+    </Setting>
+    <Setting Name="OrcidAPIBaseUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.sandbox.orcid.org/v2.0</Value>
+    </Setting>
+    <Setting Name="OrcidClientSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="OrcidClientId" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserAuthorizatoinToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserOrcidId" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

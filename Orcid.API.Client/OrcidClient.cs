@@ -20,11 +20,10 @@ namespace Orcid.API.Client
             UserOrcid = userOrcid;
         }
 
-        public OrcidAccessTokenDetails GetAccessToken(string OrcidBaseUrl, string orcidReturnCode, string OrcidClientSecret,string OrcidClientId, string OrcidClientRequestUri) {
-
-
+        public static OrcidAccessTokenDetails GetAccessToken(string oricdOAuthUrl, string orcidReturnCode, string OrcidClientSecret, string OrcidClientId, string OrcidClientRequestUri)
+        {
             // Create a Rest Client API object
-            var client = new RestClient($"{OrcidBaseUrl}/oauth/token");
+            var client = new RestClient(oricdOAuthUrl);
             var request = new RestRequest(Method.POST); // set the method to Post
 
             // Add the necessary headers
@@ -55,12 +54,22 @@ namespace Orcid.API.Client
         /// <summary>
         /// Get the User Orcid Record
         /// </summary>
-        /// <param name="UserOrcid"></param>
         /// <returns></returns>
-        public Orcid.Models.record GetUserRecord() {
-
+        public Orcid.Models.record GetUserRecord()
+        {
+            return GetUserOrcidData<record>($"/{UserOrcid}/record");
+        }
+        
+        /// <summary>
+        /// Generic method to Get the User data from Orcid.
+        /// </summary>
+        /// <typeparam name="TOrcid"></typeparam>
+        /// <param name="endpoint"></param>
+        /// <returns></returns>
+        public TOrcid GetUserOrcidData<TOrcid>(string userEndPointPath) where TOrcid : class, new()
+        {
             // Create a Rest Client API object
-            var client = new RestClient($"{OrcidApiBaseUrl}/{UserOrcid}/record");
+            var client = new RestClient($"{OrcidApiBaseUrl}{userEndPointPath}");
             var request = new RestRequest(Method.GET); // set the method to Post
 
             // Add the necessary headers
@@ -68,10 +77,14 @@ namespace Orcid.API.Client
             request.AddHeader("Authorization", $"Bearer {UserAuthorizationToken}");
 
             // request the auth token from ORCID, and receive the response back.
-            IRestResponse<Orcid.Models.record> response = client.Execute<Orcid.Models.record>(request);
+            IRestResponse response = client.Execute(request);
 
-            return response.Data;
+            
 
+            TOrcid data = Extensions.DeserializeXml<TOrcid>(response.Content);
+
+            return data;
         }
+        
     }
 }

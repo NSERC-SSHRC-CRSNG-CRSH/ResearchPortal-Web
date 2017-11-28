@@ -1,0 +1,11 @@
+﻿<filter>
+	<entities>
+		<entity>contact</entity>
+		<entity>account</entity>
+		<entity>rp2_employment</entity>
+		<entity>rp2_award</entity>
+		<entity>rp2_application</entity>
+		<entity>rp2_fundingcycle</entity>
+		<entity>rp2_fundingopportunity</entity>
+	</entities>
+</filter>

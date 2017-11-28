@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="OrcidAccessTokenDetails.cs" />
     <Compile Include="OrcidClient.cs" />
     <Compile Include="orcid-model\record-2_0.cs" />
