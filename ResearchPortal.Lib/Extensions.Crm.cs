@@ -1,19 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Linq;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
-using Microsoft.Xrm.Sdk;
 using ResearchPortal.Crm.Fetch;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ResearchPortal
 {
@@ -113,10 +102,9 @@ namespace ResearchPortal
             Dictionary<string, Entity> ret = new Dictionary<string, Entity>();
 
             var aliasedKeys = baseEntity.Attributes.Keys
-              .Where(k => k.Contains("."));
+              .Where(k => k.Contains(".")).ToList();
             var aliasPrefixes = aliasedKeys
-                .Select(k => k.Substring(0, k.IndexOf("."))
-                .Distinct());
+                .Select(k => k.Substring(0, k.IndexOf("."))).Distinct();
 
             foreach (string aliasPrefix in aliasPrefixes)
             {
